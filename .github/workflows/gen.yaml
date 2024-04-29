@@ -23,7 +23,7 @@ jobs:
           python3 gen_code.py
           mv Parameters.h HT_params_lib
           echo "{\n\"name\": \"HT_params_lib\",\n\"version\": \"1.${{ github.run_number }}.0\"\n}" >> HT_params_lib/library.json
-          tar -czvf HT_params_lib.tar.gz /HT_params_lib
+          tar -czvf HT_params_lib.tar.gz HT_params_lib
       
       - name: Create Release
         id: create_release
