@@ -1,17 +1,17 @@
 [
     {
-        "name": "MaxSpeed",
+        "name": "CASE_TORQUE_MAX",
         "type": "float",
-        "defaultValue": 120.0
+        "defaultValue": 21.4
     },
     {
-        "name": "Threshold",
+        "name": "FRONT_BRAKE_BIAS",
         "type": "float",
-        "defaultValue": 0.75
+        "defaultValue": 0.65
     },
     {
-        "name": "IsActive",
+        "name": "TCS_ACTIVE",
         "type": "bool",
-        "defaultValue": false
+        "defaultValue": true
     }
 ]

@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  generate-dbc:  
+  generate-lib:  
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,7 +22,7 @@ jobs:
           mkdir -p HT_params_lib
           python3 gen_code.py
           mv Parameters.h HT_params_lib
-          echo "{\n\"name\": \"HT_params_lib\",\n\"version\": \"1.${{ github.run_number }}.0\"\n}" >> HT_params_lib/library.json
+          echo -e "{\n\"name\": \"HT_params_lib\",\n\"version\": \"1.${{ github.run_number }}.0\"\n}" >> HT_params_lib/library.json
           tar -czvf HT_params_lib.tar.gz HT_params_lib
       
       - name: Create Release
