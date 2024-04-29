@@ -1,0 +1,17 @@
+[
+    {
+        "name": "MaxSpeed",
+        "type": "float",
+        "defaultValue": 120.0
+    },
+    {
+        "name": "Threshold",
+        "type": "float",
+        "defaultValue": 0.75
+    },
+    {
+        "name": "IsActive",
+        "type": "bool",
+        "defaultValue": false
+    }
+]
