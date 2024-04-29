@@ -1,0 +1,68 @@
+name: Generate and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-dbc:  
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.11'  # Specify the Python version
+
+      - name: generate code
+        run: |
+          mkdir -p HT_params_lib
+          python3 gen_code.py
+          mv Parameters.h HT_params_lib
+          echo "{\n\"name\": \"HT_params_lib\",\n\"version\": \"1.${{ github.run_number }}.0\"\n}" >> HT_params_lib/library.json
+          tar -czvf HT_params_lib.tar.gz /HT_params_lib
+      
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: HT_params_lib.tar.gz
+          asset_name: HT_params_lib.tar.gz
+          asset_content_type: application/zip
+      
+      - name: Upload identifiers
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: identifiers.json
+          asset_name: identifiers.json
+          asset_content_type: text/plain
+
+      - name: Upload params
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: parameters.json
+          asset_name: parameters.json
+          asset_content_type: text/plain
+
