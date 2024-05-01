@@ -1,32 +1,133 @@
 #!/usr/bin/env python
-from hytech_eth_np_proto_py import ht_eth_pb2
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import urllib.parse
 import socket
-import time
+import select
+from hytech_eth_np_proto_py import ht_eth_pb2
+import threading
 
-def main():
-    # Create a config message
-    config_msg = ht_eth_pb2.config()
-    config_msg.CASE_TORQUE_MAX = -1.0
-    config_msg.FRONT_BRAKE_BIAS = 0.7
-    config_msg.TCS_ACTIVE = True
+class RequestHandler(BaseHTTPRequestHandler):
+    config_msg = ht_eth_pb2.config()  # Holds the current or last known configuration
 
-    # Wrap the config message in the union
-    union_msg = ht_eth_pb2.HT_ETH_Union()
-    union_msg.config_.CopyFrom(config_msg)
+    def _send_response(self, html):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(html.encode('utf-8'))
 
-    # Serialize the message to a string
-    data = union_msg.SerializeToString()
+    def do_GET(self):
+        self._send_form(RequestHandler.config_msg, message="")
 
-    # Define the destination IP address and port
-    ip = "192.168.1.30"  # Example IP address
-    port = 2000          # Example port number
+    def _send_form(self, message_proto, message=''):
+        fields_html = self.generate_fields_html(message_proto)
+        html = f'''
+        <html>
+        <body>
+            <h2>Configure HT_ETH</h2>
+            {message}
+            <form action="/" method="post">
+                {fields_html}
+                <input type="submit" value="Submit">
+            </form>
+            <form action="/getconfig" method="post">
+                <input type="submit" value="Get Config">
+            </form>
+        </body>
+        </html>
+        '''
+        self._send_response(html)
 
-    # Create a socket and send the data
-    while(1):
-        # time.sleep(0.1)
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:  # Using UDP for example
+    def generate_fields_html(self, message_proto):
+        fields_html = ""
+        for field_desc in message_proto.DESCRIPTOR.fields:
+            default_value = getattr(message_proto, field_desc.name)
+            if field_desc.type == field_desc.TYPE_BOOL:
+                selected_true = 'selected' if default_value else ''
+                selected_false = 'selected' if not default_value else ''
+                fields_html += f'{field_desc.name}: <select name="{field_desc.name}"><option value="True" {selected_true}>True</option><option value="False" {selected_false}>False</option></select><br>'
+            else:
+                fields_html += f'{field_desc.name}: <input type="text" name="{field_desc.name}" value="{default_value}"><br>'
+        return fields_html
+
+    def do_POST(self):
+        if self.path == '/getconfig':
+            self.handle_get_config_request()
+        else:
+            self.handle_update_config_request()
+
+    def handle_update_config_request(self):
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length)
+        data = urllib.parse.parse_qs(post_data.decode('utf-8'))
+
+        config_msg = ht_eth_pb2.config()
+        for field_desc in config_msg.DESCRIPTOR.fields:
+            field_value = data.get(field_desc.name, [''])[0]
+            if field_desc.type == field_desc.TYPE_BOOL:
+                setattr(config_msg, field_desc.name, field_value == 'True')
+            elif field_desc.type == field_desc.TYPE_FLOAT:
+                setattr(config_msg, field_desc.name, float(field_value))
+            elif field_desc.type == field_desc.TYPE_INT32:
+                setattr(config_msg, field_desc.name, int(field_value))
+
+        RequestHandler.config_msg = config_msg  # Update the last known config
+
+        union_msg = ht_eth_pb2.HT_ETH_Union()
+        union_msg.config_.CopyFrom(config_msg)
+        print(union_msg)
+        serialized_data = union_msg.SerializeToString()
+
+        self.send_udp_message(serialized_data)
+        self._send_form(config_msg, '<p><strong>Configuration Updated Successfully</strong></p>')
+
+    def handle_get_config_request(self):
+        get_config_msg = ht_eth_pb2.get_config(update_frontend=True)
+        union_msg = ht_eth_pb2.HT_ETH_Union()
+        union_msg.get_config_.CopyFrom(get_config_msg)
+        serialized_data = union_msg.SerializeToString()
+
+        self.send_udp_message(serialized_data)
+        # Now wait for response asynchronously or via a separate thread
+        response_data = self.receive_udp_message()
+        if response_data:
+            union_response = ht_eth_pb2.HT_ETH_Union()
+            union_response.ParseFromString(response_data)
+            if union_response.HasField('config_'):
+                RequestHandler.config_msg = union_response.config_
+                self._send_form(union_response.config_, '<p><strong>Configuration Received Successfully</strong></p>')
+        else:
+            self._send_form(RequestHandler.config_msg, '<p><strong>Error: No response received</strong></p>')
+
+    def send_udp_message(self, data):
+        # ip = "192.168.1.30"
+        ip="127.0.0.1"
+        port = 2001
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             sock.sendto(data, (ip, port))
             print("Message sent!")
 
+    def receive_udp_message(self, timeout=2):
+        # ip = "192.168.1.30"
+        ip="127.0.0.1"
+        port = 2002
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+                sock.bind((ip, port))
+                sock.setblocking(0)
+                ready = select.select([sock], [], [], timeout)
+                if ready[0]:
+                    data, addr = sock.recvfrom(1024)
+                    return data
+        except OSError as e:
+            print(f"Error receiving UDP message: {str(e)}")
+            self._send_form(RequestHandler.config_msg, f'<p><strong>Error: {str(e)}</strong></p>')
+        return None
+
+def run(server_class=HTTPServer, handler_class=RequestHandler, port=8000):
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+    print(f'Server running on port {port}...')
+    httpd.serve_forever()
+
 if __name__ == "__main__":
-    main()
+    run()

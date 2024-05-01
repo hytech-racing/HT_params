@@ -5,3 +5,8 @@ message CASE_msg
     float vehm_fl_slip = 1;
     
 }
+
+message get_config
+{
+    bool update_frontend = 1;
+}
