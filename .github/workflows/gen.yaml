@@ -6,63 +6,41 @@ on:
       - main
 
 jobs:
-  generate-lib:  
+  build-lib:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [23.11]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v23
+      - name: Get branch names
+        id: branch-name
+        uses: tj-actions/branch-names@v7
       
-      - name: Set up Python
-        uses: actions/setup-python@v3
+      - uses: actions/checkout@v4
         with:
-          python-version: '3.11'  # Specify the Python version
+          repository: hytech-racing/HT_params
+          ref: refs/heads/main
+          
+      - run: nix run .#nanopb-runner
 
-      - name: generate code
+      - name: Get current date and time
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H_%M_%S')"
+
+      - name: create release artifact
         run: |
-          mkdir -p HT_params_lib
-          python3 gen_code.py
-          mv Parameters.h HT_params_lib
-          echo -e "{\n\"name\": \"HT_params_lib\",\n\"version\": \"1.${{ github.run_number }}.0\"\n}" >> HT_params_lib/library.json
-          tar -czvf HT_params_lib.tar.gz HT_params_lib
+          mkdir -p ht_eth_pb_lib
+          mv ht_eth.pb.* ht_eth_pb_lib
+          echo -e "{\n\"name\": \"ht_eth_pb_lib\",\n\"version\": \"1.${{ github.run_number }}.0\"\n}" >> ht_eth_pb_lib/library.json
+          tar -czvf ht_eth_pb_lib.tar.gz ht_eth_pb_lib
       
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
-          draft: false
-          prerelease: false
+          tag_name: ${{ steps.date.outputs.date }}
+          files: |
+            ht_eth_pb_lib.tar.gz
+            ht_eth.proto
 
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: HT_params_lib.tar.gz
-          asset_name: HT_params_lib.tar.gz
-          asset_content_type: application/zip
-      
-      - name: Upload identifiers
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: identifiers.json
-          asset_name: identifiers.json
-          asset_content_type: text/plain
-
-      - name: Upload params
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: parameters.json
-          asset_name: parameters.json
-          asset_content_type: text/plain
 

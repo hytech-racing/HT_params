@@ -1,2 +1,6 @@
 identifiers.json
 Parameters.h
+config.proto
+proto_gen/ht_eth.proto
+result
+result/

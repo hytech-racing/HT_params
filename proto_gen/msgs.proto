@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message CASE_msg
+{
+    float vehm_fl_slip = 1;
+    
+}
