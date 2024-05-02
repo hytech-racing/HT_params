@@ -5,9 +5,16 @@ import socket
 import select
 from hytech_eth_np_proto_py import ht_eth_pb2
 import threading
+import argparse
 
 class RequestHandler(BaseHTTPRequestHandler):
     config_msg = ht_eth_pb2.config()  # Holds the current or last known configuration
+    
+    def __init__(self, *args, **kwargs):
+        self.ip = kwargs.pop('ip', "192.168.1.30")
+        self.send_port = kwargs.pop('send_port', 2001)
+        self.recv_port = kwargs.pop('recv_port', 2002)
+        super().__init__(*args, **kwargs)
 
     def _send_response(self, html):
         self.send_response(200)
@@ -99,20 +106,14 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._send_form(RequestHandler.config_msg, '<p><strong>Error: No response received</strong></p>')
 
     def send_udp_message(self, data):
-        # ip = "192.168.1.30"
-        ip="127.0.0.1"
-        port = 2001
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-            sock.sendto(data, (ip, port))
+            sock.sendto(data, (self.ip, self.send_port))
             print("Message sent!")
 
     def receive_udp_message(self, timeout=2):
-        # ip = "192.168.1.30"
-        ip="127.0.0.1"
-        port = 2002
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-                sock.bind((ip, port))
+                sock.bind((self.ip, self.recv_port))
                 sock.setblocking(0)
                 ready = select.select([sock], [], [], timeout)
                 if ready[0]:
@@ -123,11 +124,18 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._send_form(RequestHandler.config_msg, f'<p><strong>Error: {str(e)}</strong></p>')
         return None
 
-def run(server_class=HTTPServer, handler_class=RequestHandler, port=8000):
+def run(server_class=HTTPServer, handler_class=RequestHandler, port=8000, **kwargs):
     server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
+    httpd = server_class(server_address, lambda *args, **kwargs_: handler_class(*args, **kwargs, **kwargs_))
     print(f'Server running on port {port}...')
     httpd.serve_forever()
 
 if __name__ == "__main__":
-    run()
+    parser = argparse.ArgumentParser(description="HTTP Server for handling configurations")
+    parser.add_argument("--port", type=int, default=8000, help="HTTP server port")
+    parser.add_argument("--ip", default="127.0.0.1", help="UDP send IP address")
+    parser.add_argument("--send_port", type=int, default=2001, help="UDP send port")
+    parser.add_argument("--recv_port", type=int, default=2002, help="UDP receive port")
+    args = parser.parse_args()
+
+    run(port=args.port, ip=args.ip, send_port=args.send_port, recv_port=args.recv_port)

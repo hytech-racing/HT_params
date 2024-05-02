@@ -15,11 +15,6 @@
         "defaultValue": true
     },
     {
-        "name": "SHAYAN_FAST",
-        "type": "bool",
-        "defaultValue": true
-    },
-    {
         "name": "PID_TV_P",
         "type": "float",
         "defaultValue": 1.0
@@ -33,5 +28,11 @@
         "name": "PID_TV_D",
         "type": "float",
         "defaultValue": 0.0
+    },
+    {
+        "name": "BRAKE_THRESHOLD",
+        "type": "float",
+        "defaultValue": 0.0
     }
+    
 ]
