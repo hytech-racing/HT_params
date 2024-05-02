@@ -95,13 +95,14 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         self.send_udp_message(serialized_data)
         # Now wait for response asynchronously or via a separate thread
-        response_data = self.receive_udp_message()
-        if response_data:
-            union_response = ht_eth_pb2.HT_ETH_Union()
-            union_response.ParseFromString(response_data)
-            if union_response.HasField('config_'):
-                RequestHandler.config_msg = union_response.config_
-                self._send_form(union_response.config_, '<p><strong>Configuration Received Successfully</strong></p>')
+        response_data, got_resp = self.receive_udp_message()
+        if response_data or got_resp:
+            print("yo got somethin")
+            config_msg = ht_eth_pb2.config()
+            config_msg.ParseFromString(response_data)
+            print(config_msg)
+            RequestHandler.config_msg = config_msg
+            self._send_form(config_msg, '<p><strong>Configuration Received Successfully</strong></p>')
         else:
             self._send_form(RequestHandler.config_msg, '<p><strong>Error: No response received</strong></p>')
 
@@ -113,12 +114,13 @@ class RequestHandler(BaseHTTPRequestHandler):
     def receive_udp_message(self, timeout=2):
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-                sock.bind((self.ip, self.recv_port))
+                sock.bind(("192.168.1.69", self.recv_port))
                 sock.setblocking(0)
                 ready = select.select([sock], [], [], timeout)
                 if ready[0]:
+                    print("ready")
                     data, addr = sock.recvfrom(1024)
-                    return data
+                    return data, ready[0]
         except OSError as e:
             print(f"Error receiving UDP message: {str(e)}")
             self._send_form(RequestHandler.config_msg, f'<p><strong>Error: {str(e)}</strong></p>')
