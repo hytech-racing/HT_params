@@ -114,7 +114,9 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def receive_udp_message(self, timeout=2):
         try:
+            print(self.host_ip)
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+                print(self.host_ip)
                 sock.bind((self.host_ip, self.recv_port))
                 sock.setblocking(0)
                 ready = select.select([sock], [], [], timeout)
