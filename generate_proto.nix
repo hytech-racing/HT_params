@@ -19,6 +19,8 @@ pkgs.stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/proto
     mkdir -p $out/bin
+    mkdir -p $out/include
+    cp default_config.h $out/include
     cp ht_eth.proto $out/proto
     cp ht_eth.bin $out/bin
   '';

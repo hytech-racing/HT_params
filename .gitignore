@@ -4,3 +4,4 @@ config.proto
 proto_gen/ht_eth.proto
 result
 result/
+proto_gen/default_config.h

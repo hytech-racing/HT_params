@@ -49,6 +49,7 @@
         export PATH="${pkgs.protobuf}/bin:$PATH"
         ${pkgs.nanopb}/bin/nanopb_generator.py -I=${pkgs.ht_eth_protos_gen_pkg}/proto ht_eth.proto
         cp ${pkgs.ht_eth_protos_gen_pkg}/proto/ht_eth.proto .
+        cp ${pkgs.ht_eth_protos_gen_pkg}/include/* .
       '';
 
       shared_shell = pkgs.mkShell rec {

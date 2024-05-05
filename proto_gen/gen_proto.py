@@ -27,6 +27,24 @@ def verify_parameters(parameters):
             raise ValueError(f"Default value for {param_name} must be a float")
         elif param_type == 'bool' and not isinstance(default_value, bool):
             raise ValueError(f"Default value for {param_name} must be a bool")
+def generate_default_config_addendum(parameters, output_file='default_config.h'):
+    header_content = f"""#ifndef DEFAULT_CONFIG_H
+#define DEFAULT_CONFIG_H
+
+#include "ht_eth.pb.h"
+
+static const config DEFAULT_CONFIG = {{
+"""
+    for param in parameters:
+        param_name = param['name']
+        param_type = param['type']
+        default_value = format_default_value(param['defaultValue'], param_type)
+        header_content += f"    .{param_name} = {default_value},\n"
+    
+    header_content += "};\n\n#endif // DEFAULT_CONFIG_H\n"
+
+    with open(output_file, 'w') as file:
+        file.write(header_content)
 
 def generate_proto(parameters, msgs_file='msgs.proto', output_file='ht_eth.proto'):
     proto_types = {
@@ -46,7 +64,7 @@ def generate_proto(parameters, msgs_file='msgs.proto', output_file='ht_eth.proto
     for param in parameters:
         param_name = param['name']
         param_type = param['type']
-        default_value = format_default_value(param['defaultValue'], param_type)
+        
         proto_type = proto_types[param_type]
         config_content += f"    {proto_type} {param_name} = {field_number};\n"
         field_number += 1
@@ -78,3 +96,4 @@ if __name__ == "__main__":
         params = json.load(file)
     verify_parameters(params)
     generate_proto(params)
+    generate_default_config_addendum(params)

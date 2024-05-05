@@ -31,6 +31,7 @@ jobs:
       - name: create release artifact
         run: |
           mkdir -p ht_eth_pb_lib
+          mv default_config.h ht_eth_pb_lib
           mv ht_eth.pb.* ht_eth_pb_lib
           echo -e "{\n\"name\": \"ht_eth_pb_lib\",\n\"version\": \"1.${{ github.run_number }}.0\"\n}" >> ht_eth_pb_lib/library.json
           tar -czvf ht_eth_pb_lib.tar.gz ht_eth_pb_lib
