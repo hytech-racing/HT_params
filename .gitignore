@@ -5,3 +5,7 @@ proto_gen/ht_eth.proto
 result
 result/
 proto_gen/default_config.h
+ht_eth.pb.h
+ht_eth.pb.c
+ht_eth.proto
+default_config.h
