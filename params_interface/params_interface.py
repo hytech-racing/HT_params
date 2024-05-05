@@ -12,6 +12,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     
     def __init__(self, *args, **kwargs):
         self.ip = kwargs.pop('ip', "192.168.1.30")
+        self.host_ip = kwargs.pop('host_ip', "192.168.1.68")
         self.send_port = kwargs.pop('send_port', 2001)
         self.recv_port = kwargs.pop('recv_port', 2002)
         super().__init__(*args, **kwargs)
@@ -114,7 +115,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     def receive_udp_message(self, timeout=2):
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-                sock.bind(("192.168.1.69", self.recv_port))
+                sock.bind((self.host_ip, self.recv_port))
                 sock.setblocking(0)
                 ready = select.select([sock], [], [], timeout)
                 if ready[0]:
@@ -136,6 +137,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="HTTP Server for handling configurations")
     parser.add_argument("--port", type=int, default=8000, help="HTTP server port")
     parser.add_argument("--ip", default="127.0.0.1", help="UDP send IP address")
+    parser.add_argument("--host_ip", default="127.0.0.1", help="UDP recv IP address")
     parser.add_argument("--send_port", type=int, default=2001, help="UDP send port")
     parser.add_argument("--recv_port", type=int, default=2002, help="UDP receive port")
     args = parser.parse_args()
