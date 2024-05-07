@@ -12,7 +12,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     
     def __init__(self, *args, **kwargs):
         self.ip = kwargs.pop('ip', "192.168.1.30")
-        self.host_ip = kwargs.pop('host_ip', "192.168.1.68")
+        self.host_ip = kwargs.pop('host_ip', "192.168.1.69")
         self.send_port = kwargs.pop('send_port', 2001)
         self.recv_port = kwargs.pop('recv_port', 2002)
         super().__init__(*args, **kwargs)
@@ -97,7 +97,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.send_udp_message(serialized_data)
         # Now wait for response asynchronously or via a separate thread
         response_data, got_resp = self.receive_udp_message()
-        if response_data or got_resp:
+        if response_data and got_resp:
             print("yo got somethin")
             config_msg = ht_eth_pb2.config()
             config_msg.ParseFromString(response_data)
@@ -105,6 +105,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             RequestHandler.config_msg = config_msg
             self._send_form(config_msg, '<p><strong>Configuration Received Successfully</strong></p>')
         else:
+            print("error, didnt get any response")
             self._send_form(RequestHandler.config_msg, '<p><strong>Error: No response received</strong></p>')
 
     def send_udp_message(self, data):
@@ -114,18 +115,19 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def receive_udp_message(self, timeout=2):
         try:
-            print(self.host_ip)
-            
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-                sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                print(self.host_ip)
-                sock.bind((self.host_ip, self.recv_port))
-                sock.setblocking(0)
+                print(self.recv_port)
+                sock.bind(('192.168.1.69', self.recv_port))
+                
                 ready = select.select([sock], [], [], timeout)
+                print("attempting to recv")
                 if ready[0]:
                     print("ready")
                     data, addr = sock.recvfrom(1024)
                     return data, ready[0]
+                else:
+                    self._send_form(RequestHandler.config_msg, f'<p><strong>Error: {str(e)}</strong></p>')
+                    return bytes(), False
         except OSError as e:
             print(f"Error receiving UDP message: {str(e)}")
             self._send_form(RequestHandler.config_msg, f'<p><strong>Error: {str(e)}</strong></p>')
