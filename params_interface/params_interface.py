@@ -12,9 +12,9 @@ class RequestHandler(BaseHTTPRequestHandler):
     
     def __init__(self, *args, **kwargs):
         self.ip = kwargs.pop('ip', "192.168.1.30")
-        self.host_ip = kwargs.pop('host_ip', "192.168.1.69")
-        self.send_port = kwargs.pop('send_port', 2001)
-        self.recv_port = kwargs.pop('recv_port', 2002)
+        self.host_ip = kwargs.pop('host_ip', "192.168.1.68")
+        self.send_port = kwargs.pop('send_port', 2000)
+        self.recv_port = kwargs.pop('recv_port', 2001)
         super().__init__(*args, **kwargs)
 
     def _send_response(self, html):
@@ -117,7 +117,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
                 print(self.recv_port)
-                sock.bind(('192.168.1.69', self.recv_port))
+                print(self.host_ip)
+                sock.bind((self.host_ip, self.recv_port))
                 
                 ready = select.select([sock], [], [], timeout)
                 print("attempting to recv")
@@ -126,7 +127,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                     data, addr = sock.recvfrom(1024)
                     return data, ready[0]
                 else:
-                    self._send_form(RequestHandler.config_msg, f'<p><strong>Error: {str(e)}</strong></p>')
+                    self._send_form(RequestHandler.config_msg, f'<p><strong>Error: {str("rip no msg recvd")}</strong></p>')
                     return bytes(), False
         except OSError as e:
             print(f"Error receiving UDP message: {str(e)}")
