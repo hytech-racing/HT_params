@@ -11,8 +11,9 @@ class RequestHandler(BaseHTTPRequestHandler):
     config_msg = ht_eth_pb2.config()  # Holds the current or last known configuration
     
     def __init__(self, *args, **kwargs):
-        self.ip = kwargs.pop('ip', "192.168.1.30")
-        self.host_ip = kwargs.pop('host_ip', "192.168.1.68")
+        self.port = kwargs.pop('port', 8001) 
+        self.ip = kwargs.pop('ip', '192.168.1.30')
+        self.host_ip = kwargs.pop('host_ip', '192.168.1.69')
         self.send_port = kwargs.pop('send_port', 2000)
         self.recv_port = kwargs.pop('recv_port', 2001)
         super().__init__(*args, **kwargs)
