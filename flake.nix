@@ -5,7 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     flake-utils.url = "github:numtide/flake-utils";
     nix-proto = { url = "github:notalltim/nix-proto"; };
-    # ht-protos = { url = "github:hytech-racing/HT_proto"; };
   };
 
   outputs =
@@ -17,11 +16,6 @@
     }@inputs:
     flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" "aarch64-linux" ] (system:
     let
-
-      params_interface_overlay = final: prev: {
-        params_interface = final.callPackage ./default.nix { };
-      };
-      
       ht_eth_protos_overlay = final: prev: {
         # package that has the "final" hytech_eth.proto file
         ht_eth_protos_gen_pkg = final.callPackage ./generate_proto.nix { };
@@ -37,7 +31,6 @@
           };
       };
       my_overlays = [
-        params_interface_overlay
         ht_eth_protos_overlay
       ] ++ nix-proto.lib.overlayToList nix_protos_eth_overlays;
       pkgs = import nixpkgs {
@@ -55,8 +48,7 @@
       shared_shell = pkgs.mkShell rec {
         name = "nix-devshell";
         packages = with pkgs; [
-          jq
-          params_interface
+          ht_eth_protos_gen_pkg
         ];
       };
 
@@ -69,8 +61,8 @@
       };
 
       packages = rec {
-        default = pkgs.params_interface;
-        protos = pkgs.ht_eth_protos_gen_pkg;
+        hytech_eth_np_proto_py = pkgs.hytech_eth_np_proto_py;
+        default = pkgs.ht_eth_protos_gen_pkg;
         nanopbRunner = nanopb_runner;
       };
 
