@@ -42,7 +42,7 @@
     {
         "name": "yaw_pid_p",
         "type": "float",
-        "defaultValue": 1.369
+        "defaultValue": 1.5
     },
     {
         "name": "yaw_pid_i",
@@ -62,17 +62,17 @@
     {
         "name": "tcs_pid_p_upperBound_front",
         "type": "float",
-        "defaultValue": 55.0
+        "defaultValue": 45.0
     },
     {
         "name": "tcs_pid_p_lowerBound_rear",
         "type": "float",
-        "defaultValue": 28.0
+        "defaultValue": 32.0
     },
     {
         "name": "tcs_pid_p_upperBound_rear",
         "type": "float",
-        "defaultValue": 35.0
+        "defaultValue": 45.0
     },
     {
         "name": "tcs_pid_i",
@@ -127,7 +127,7 @@
     {
         "name": "useDiscontinuousYawPIDBrakes",
         "type": "bool",
-        "defaultValue": false
+        "defaultValue": true
     },
     {
         "name": "tcsSLThreshold",
@@ -152,7 +152,7 @@
     {
         "name": "tcsVelThreshold",
         "type": "float",
-        "defaultValue": 2.5
+        "defaultValue": 0.15
     },
     {
         "name": "yawPIDMaxDifferential",
@@ -167,7 +167,7 @@
     {
         "name": "yawPIDVelThreshold",
         "type": "float",
-        "defaultValue": 1.0
+        "defaultValue": 0.35
     },
     {
         "name": "yawPIDCoastThreshold",
@@ -207,7 +207,7 @@
     {
         "name": "RegenLimit",
         "type": "float",
-        "defaultValue": -10.0
+        "defaultValue": -15.0
     },
     {
         "name": "useNoRegen5kph",
@@ -263,6 +263,36 @@
         "name": "maxNormalLoadBrakeScalingFront",
         "type": "float",
         "defaultValue": 1.25
+    },
+    {
+        "name": "tcs_saturation_front",
+        "type": "float",
+        "defaultValue":20
+    },
+    {
+        "name": "tcs_saturation_rear",
+        "type": "float",
+        "defaultValue":20
+    },
+    {
+        "name": "TCSGenLeftRightDiffLowerBound",
+        "type": "float",
+        "defaultValue": 2
+    },
+    {
+        "name": "TCSGenLeftRightDiffUpperBound",
+        "type": "float",
+        "defaultValue":20
+    },
+    {
+        "name": "TCSWheelSteerLowerBound",
+        "type": "float",
+        "defaultValue":2
+    },
+    {
+        "name": "TCSWheelSteerUpperBound",
+        "type": "float",
+        "defaultValue":25
     },
     {
         "name": "max_rpm",
