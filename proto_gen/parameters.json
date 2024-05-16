@@ -260,6 +260,36 @@
     "defaultValue": 25
   },
   {
+    "name" : "useRPM_TCS_GainSchedule",
+    "type":"bool",
+    "defaultValue":true
+  },
+  {
+    "name" : "useNL_TCS_GainSchedule",
+    "type":"bool",
+    "defaultValue":true
+  },
+  {
+    "name" : "TCS_NL_startBoundPerc_FrontAxle",
+    "type":"float",
+    "defaultValue": 0.5
+  },
+  {
+    "name" : "TCS_NL_endBoundPerc_FrontAxle",
+    "type":"float",
+    "defaultValue": 0.4
+  },
+  {
+    "name" : "TCS_NL_startBoundPerc_RearAxle",
+    "type":"float",
+    "defaultValue": 0.5
+  },
+  {
+    "name" : "TCS_NL_endBoundPerc_RearAxle",
+    "type":"float",
+    "defaultValue": 0.6
+  },
+  {
     "name": "max_rpm",
     "type": "int",
     "defaultValue": 20000
