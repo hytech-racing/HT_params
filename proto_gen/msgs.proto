@@ -10,3 +10,8 @@ message get_config
 {
     bool update_frontend = 1;
 }
+
+message web_app_command
+{
+    bool writing = 1;
+}
