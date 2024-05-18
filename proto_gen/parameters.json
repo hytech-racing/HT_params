@@ -50,6 +50,36 @@
     "defaultValue": 0.0
   },
   {
+    "name": "useRPM_TCS_GainSchedule",
+    "type": "bool",
+    "defaultValue": true
+  },
+  {
+    "name": "useNL_TCS_GainSchedule",
+    "type": "bool",
+    "defaultValue": true
+  },
+  {
+    "name": "TCS_NL_startBoundPerc_FrontAxle",
+    "type": "float",
+    "defaultValue": 0.5
+  },
+  {
+    "name": "TCS_NL_endBoundPerc_FrontAxle",
+    "type": "float",
+    "defaultValue": 0.4
+  },
+  {
+    "name": "TCS_NL_startBoundPerc_RearAxle",
+    "type": "float",
+    "defaultValue": 0.5
+  },
+  {
+    "name": "TCS_NL_endBoundPerc_RearAxle",
+    "type": "float",
+    "defaultValue": 0.6
+  },
+  {
     "name": "useLaunch",
     "type": "bool",
     "defaultValue": false
@@ -95,14 +125,69 @@
     "defaultValue": true
   },
   {
-    "name": "tcsSLThreshold",
+    "name": "useNL_TCS_SlipSchedule",
     "type": "float",
     "defaultValue": 0.3
   },
   {
-    "name": "launchSL",
+    "name": "TCS_SL_startBound_Front",
+    "type": "float",
+    "defaultValue": 0.25
+  },
+  {
+    "name": "TCS_SL_endBound_Front",
+    "type": "float",
+    "defaultValue": 0.15
+  },
+  {
+    "name": "TCS_SL_startBound_Rear",
     "type": "float",
     "defaultValue": 0.3
+  },
+  {
+    "name": "TCS_SL_endBound_Rear",
+    "type": "float",
+    "defaultValue": 0.4
+  },
+  {
+    "name": "launchSL_startBound_Front",
+    "type": "float",
+    "defaultValue": 0.25
+  },
+  {
+    "name": "launchSL_endBound_Front",
+    "type": "float",
+    "defaultValue": 0.15
+  },
+  {
+    "name": "launchSL_startBound_Rear",
+    "type": "float",
+    "defaultValue": 0.3
+  },
+  {
+    "name": "launchSL_endBound_Rear",
+    "type": "float",
+    "defaultValue": 0.4
+  },
+  {
+    "name": "TCS_SL_NLPerc_startBound_Front",
+    "type": "float",
+    "defaultValue": 0.5
+  },
+  {
+    "name": "TCS_SL_NLPerc_endBound_Front",
+    "type": "float",
+    "defaultValue": 0.4
+  },
+  {
+    "name": "TCS_SL_NLPerc_startBound_Rear",
+    "type": "float",
+    "defaultValue": 0.5
+  },
+  {
+    "name": "TCS_SL_NLPerc_endBound_Rear",
+    "type": "float",
+    "defaultValue": 0.6
   },
   {
     "name": "launchDeadZone",
@@ -258,36 +343,6 @@
     "name": "TCSWheelSteerUpperBound",
     "type": "float",
     "defaultValue": 25
-  },
-  {
-    "name" : "useRPM_TCS_GainSchedule",
-    "type":"bool",
-    "defaultValue":true
-  },
-  {
-    "name" : "useNL_TCS_GainSchedule",
-    "type":"bool",
-    "defaultValue":true
-  },
-  {
-    "name" : "TCS_NL_startBoundPerc_FrontAxle",
-    "type":"float",
-    "defaultValue": 0.5
-  },
-  {
-    "name" : "TCS_NL_endBoundPerc_FrontAxle",
-    "type":"float",
-    "defaultValue": 0.4
-  },
-  {
-    "name" : "TCS_NL_startBoundPerc_RearAxle",
-    "type":"float",
-    "defaultValue": 0.5
-  },
-  {
-    "name" : "TCS_NL_endBoundPerc_RearAxle",
-    "type":"float",
-    "defaultValue": 0.6
   },
   {
     "name": "max_rpm",
