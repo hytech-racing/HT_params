@@ -1,118 +1,228 @@
 [
   {
-    "name": "AbsoluteTorqueLimit",
+    "name": "TCSVelThreshold",
     "type": "float",
-    "defaultValue": 21.42
+    "defaultValue": 1.50000
   },
   {
-    "name": "yaw_pid_p",
+    "name": "TCS_General_SideDifferential_LowerBound",
     "type": "float",
-    "defaultValue": 1.5
+    "defaultValue": 2.00000
   },
   {
-    "name": "yaw_pid_i",
+    "name": "TCS_General_SideDifferential_UpperBound",
     "type": "float",
-    "defaultValue": 0.25
+    "defaultValue": 20.00000
   },
   {
-    "name": "yaw_pid_d",
+    "name": "TCS_General_WheelSteer_LowerBound",
     "type": "float",
-    "defaultValue": 0.0
+    "defaultValue": 2.00000
   },
   {
-    "name": "tcs_pid_p_lowerBound_front",
+    "name": "TCS_General_WheelSteer_UpperBound",
     "type": "float",
-    "defaultValue": 35.0
+    "defaultValue": 25.00000
   },
   {
-    "name": "tcs_pid_p_upperBound_front",
+    "name": "TCS_PID_D",
     "type": "float",
-    "defaultValue": 45.0
+    "defaultValue": 0.00000
   },
   {
-    "name": "tcs_pid_p_lowerBound_rear",
+    "name": "TCS_PID_I",
     "type": "float",
-    "defaultValue": 32.0
+    "defaultValue": 0.00000
   },
   {
-    "name": "tcs_pid_p_upperBound_rear",
+    "name": "TCS_PID_NormalLoad_EndPercent_Front",
     "type": "float",
-    "defaultValue": 45.0
+    "defaultValue": 0.40000
   },
   {
-    "name": "tcs_pid_i",
+    "name": "TCS_PID_NormalLoad_EndPercent_Rear",
     "type": "float",
-    "defaultValue": 0.0
+    "defaultValue": 0.60000
   },
   {
-    "name": "tcs_pid_d",
+    "name": "TCS_PID_NormalLoad_StartPercent_Front",
     "type": "float",
-    "defaultValue": 0.0
+    "defaultValue": 0.50000
   },
   {
-    "name": "useRPM_TCS_GainSchedule",
-    "type": "bool",
-    "defaultValue": true
-  },
-  {
-    "name": "useNL_TCS_GainSchedule",
-    "type": "bool",
-    "defaultValue": true
-  },
-  {
-    "name": "TCS_NL_startBoundPerc_FrontAxle",
+    "name": "TCS_PID_NormalLoad_StartPercent_Rear",
     "type": "float",
-    "defaultValue": 0.5
+    "defaultValue": 0.50000
   },
   {
-    "name": "TCS_NL_endBoundPerc_FrontAxle",
+    "name": "TCS_PID_P_LowerBound_Front",
     "type": "float",
-    "defaultValue": 0.4
+    "defaultValue": 55.00000
   },
   {
-    "name": "TCS_NL_startBoundPerc_RearAxle",
+    "name": "TCS_PID_P_LowerBound_Rear",
     "type": "float",
-    "defaultValue": 0.5
+    "defaultValue": 30.00000
   },
   {
-    "name": "TCS_NL_endBoundPerc_RearAxle",
+    "name": "TCS_PID_P_UpperBound_Front",
     "type": "float",
-    "defaultValue": 0.6
+    "defaultValue": 40.00000
   },
   {
-    "name": "useLaunch",
-    "type": "bool",
-    "defaultValue": false
+    "name": "TCS_PID_P_UpperBound_Rear",
+    "type": "float",
+    "defaultValue": 40.00000
   },
   {
-    "name": "usePIDTV",
-    "type": "bool",
-    "defaultValue": true
+    "name": "TCS_PID_RPM_Lower_Front",
+    "type": "float",
+    "defaultValue": 0.00000
   },
   {
-    "name": "useTCSLimitedYawPID",
-    "type": "bool",
-    "defaultValue": true
+    "name": "TCS_PID_RPM_Lower_Rear",
+    "type": "float",
+    "defaultValue": 0.00000
   },
   {
-    "name": "useNormalForce",
-    "type": "bool",
-    "defaultValue": true
+    "name": "TCS_PID_RPM_Upper_Front",
+    "type": "float",
+    "defaultValue": 5000.00000
   },
   {
-    "name": "useTractionControl",
-    "type": "bool",
-    "defaultValue": true
+    "name": "TCS_PID_RPM_Upper_Rear",
+    "type": "float",
+    "defaultValue": 5000.00000
   },
   {
-    "name": "usePowerLimit",
-    "type": "bool",
-    "defaultValue": true
+    "name": "TCS_SL_NormalLoad_EndPercent_Front",
+    "type": "float",
+    "defaultValue": 0.40000
   },
   {
-    "name": "usePIDPowerLimit",
-    "type": "bool",
-    "defaultValue": false
+    "name": "TCS_SL_NormalLoad_EndPercent_Rear",
+    "type": "float",
+    "defaultValue": 0.60000
+  },
+  {
+    "name": "TCS_SL_NormalLoad_StartPercent_Front",
+    "type": "float",
+    "defaultValue": 0.50000
+  },
+  {
+    "name": "TCS_SL_NormalLoad_StartPercent_Rear",
+    "type": "float",
+    "defaultValue": 0.50000
+  },
+  {
+    "name": "TCS_SL_Target_EndBound_Front",
+    "type": "float",
+    "defaultValue": 0.10000
+  },
+  {
+    "name": "TCS_SL_Target_EndBound_Rear",
+    "type": "float",
+    "defaultValue": 0.40000
+  },
+  {
+    "name": "TCS_SL_Target_StartBound_Front",
+    "type": "float",
+    "defaultValue": 0.25000
+  },
+  {
+    "name": "TCS_SL_Target_StartBound_Rear",
+    "type": "float",
+    "defaultValue": 0.25000
+  },
+  {
+    "name": "TCS_Saturation_Front",
+    "type": "float",
+    "defaultValue": 20.00000
+  },
+  {
+    "name": "TCS_Saturation_Rear",
+    "type": "float",
+    "defaultValue": 20.00000
+  },
+  {
+    "name": "absTorqueLimit",
+    "type": "float",
+    "defaultValue": 21.42000
+  },
+  {
+    "name": "brakeTorquePercentFront",
+    "type": "float",
+    "defaultValue": 0.70000
+  },
+  {
+    "name": "decoupledYawPIDBrakesMaxDifferential",
+    "type": "float",
+    "defaultValue": 2.00000
+  },
+  {
+    "name": "discontinuousBrakesPercentThreshold",
+    "type": "float",
+    "defaultValue": 0.70000
+  },
+  {
+    "name": "driveTorquePercentFront",
+    "type": "float",
+    "defaultValue": 0.50000
+  },
+  {
+    "name": "launchDeadZone",
+    "type": "float",
+    "defaultValue": 20.00000
+  },
+  {
+    "name": "launchMaxSideDifferential",
+    "type": "float",
+    "defaultValue": 2.00000
+  },
+  {
+    "name": "launchSL_Target_EndBound_Front",
+    "type": "float",
+    "defaultValue": 0.10000
+  },
+  {
+    "name": "launchSL_Target_EndBound_Rear",
+    "type": "float",
+    "defaultValue": 0.35000
+  },
+  {
+    "name": "launchSL_Target_StartBound_Front",
+    "type": "float",
+    "defaultValue": 0.25000
+  },
+  {
+    "name": "launchSL_Target_StartBound_Rear",
+    "type": "float",
+    "defaultValue": 0.25000
+  },
+  {
+    "name": "launchVelThreshold",
+    "type": "float",
+    "defaultValue": 0.15000
+  },
+  {
+    "name": "maxNormalLoadBrakeScalingFront",
+    "type": "float",
+    "defaultValue": 1.25000
+  },
+  {
+    "name": "mechPowerMax_kW",
+    "type": "float",
+    "defaultValue": 63.00000
+  },
+  {
+    "name": "regenLimit",
+    "type": "float",
+    "defaultValue": -15.00000
+  },
+  {
+    "name": "torqueMode",
+    "type": "float",
+    "defaultValue": 21.42000
   },
   {
     "name": "useDecoupledYawBrakes",
@@ -125,142 +235,52 @@
     "defaultValue": true
   },
   {
-    "name": "useNL_TCS_SlipSchedule",
-    "type": "float",
-    "defaultValue": 0.3
-  },
-  {
-    "name": "TCS_SL_startBound_Front",
-    "type": "float",
-    "defaultValue": 0.25
-  },
-  {
-    "name": "TCS_SL_endBound_Front",
-    "type": "float",
-    "defaultValue": 0.15
-  },
-  {
-    "name": "TCS_SL_startBound_Rear",
-    "type": "float",
-    "defaultValue": 0.3
-  },
-  {
-    "name": "TCS_SL_endBound_Rear",
-    "type": "float",
-    "defaultValue": 0.4
-  },
-  {
-    "name": "launchSL_startBound_Front",
-    "type": "float",
-    "defaultValue": 0.25
-  },
-  {
-    "name": "launchSL_endBound_Front",
-    "type": "float",
-    "defaultValue": 0.15
-  },
-  {
-    "name": "launchSL_startBound_Rear",
-    "type": "float",
-    "defaultValue": 0.3
-  },
-  {
-    "name": "launchSL_endBound_Rear",
-    "type": "float",
-    "defaultValue": 0.4
-  },
-  {
-    "name": "TCS_SL_NLPerc_startBound_Front",
-    "type": "float",
-    "defaultValue": 0.5
-  },
-  {
-    "name": "TCS_SL_NLPerc_endBound_Front",
-    "type": "float",
-    "defaultValue": 0.4
-  },
-  {
-    "name": "TCS_SL_NLPerc_startBound_Rear",
-    "type": "float",
-    "defaultValue": 0.5
-  },
-  {
-    "name": "TCS_SL_NLPerc_endBound_Rear",
-    "type": "float",
-    "defaultValue": 0.6
-  },
-  {
-    "name": "launchDeadZone",
-    "type": "float",
-    "defaultValue": 20.0
-  },
-  {
-    "name": "launchVelThreshold",
-    "type": "float",
-    "defaultValue": 0.15
-  },
-  {
-    "name": "tcsVelThreshold",
-    "type": "float",
-    "defaultValue": 1.5
-  },
-  {
-    "name": "yawPIDMaxDifferential",
-    "type": "float",
-    "defaultValue": 10.0
-  },
-  {
-    "name": "yawPIDErrorThreshold",
-    "type": "float",
-    "defaultValue": 0.1
-  },
-  {
-    "name": "yawPIDVelThreshold",
-    "type": "float",
-    "defaultValue": 0.35
-  },
-  {
-    "name": "yawPIDCoastThreshold",
-    "type": "float",
-    "defaultValue": 2.5
-  },
-  {
-    "name": "yaw_pid_brakes_p",
-    "type": "float",
-    "defaultValue": 0.25
-  },
-  {
-    "name": "yaw_pid_brakes_i",
-    "type": "float",
-    "defaultValue": 0.0
-  },
-  {
-    "name": "yaw_pid_brakes_d",
-    "type": "float",
-    "defaultValue": 0.0
-  },
-  {
-    "name": "decoupledYawPIDBrakesMaxDIfference",
-    "type": "float",
-    "defaultValue": 2.0
-  },
-  {
-    "name": "discontinuousBrakesPercentThreshold",
-    "type": "float",
-    "defaultValue": 0.7
-  },
-  {
-    "name": "TorqueMode",
-    "type": "float",
-    "defaultValue": 21.42
-  },
-  {
-    "name": "RegenLimit",
-    "type": "float",
-    "defaultValue": -15.0
+    "name": "useLaunch",
+    "type": "bool",
+    "defaultValue": false
   },
   {
     "name": "useNoRegen5kph",
+    "type": "bool",
+    "defaultValue": false
+  },
+  {
+    "name": "useNormalForce",
+    "type": "bool",
+    "defaultValue": true
+  },
+  {
+    "name": "useNormalLoad_TCS_GainSchedule",
+    "type": "bool",
+    "defaultValue": false
+  },
+  {
+    "name": "useNormalLoad_TCS_SL_Schedule",
+    "type": "bool",
+    "defaultValue": true
+  },
+  {
+    "name": "usePIDPowerLimit",
+    "type": "bool",
+    "defaultValue": false
+  },
+  {
+    "name": "usePIDTV",
+    "type": "bool",
+    "defaultValue": true
+  },
+  {
+    "name": "usePowerLimit",
+    "type": "bool",
+    "defaultValue": true
+  },
+  {
+    "name": "useRPM_TCS_GainSchedule",
+    "type": "bool",
+    "defaultValue": true
+  },
+  {
+    "name": "useTCSLimitedYawPID",
     "type": "bool",
     "defaultValue": true
   },
@@ -270,93 +290,58 @@
     "defaultValue": true
   },
   {
-    "name": "DriveTorquePercentFront",
-    "type": "float",
-    "defaultValue": 0.5
+    "name": "useTractionControl",
+    "type": "bool",
+    "defaultValue": true
   },
   {
-    "name": "BrakeTorquePercentFront",
+    "name": "yawPIDCoastThreshold",
     "type": "float",
-    "defaultValue": 0.7
+    "defaultValue": 2.50000
   },
   {
-    "name": "MechPowerMaxkW",
+    "name": "yawPIDErrorThreshold",
     "type": "float",
-    "defaultValue": 63.0
+    "defaultValue": 0.10000
   },
   {
-    "name": "launchLeftRightMaxDiff",
+    "name": "yawPIDMaxDifferential",
     "type": "float",
-    "defaultValue": 2.0
+    "defaultValue": 10.00000
   },
   {
-    "name": "tcs_pid_lower_rpm_front",
+    "name": "yawPIDVelThreshold",
     "type": "float",
-    "defaultValue": 0.0
+    "defaultValue": 0.35000
   },
   {
-    "name": "tcs_pid_upper_rpm_front",
+    "name": "yaw_PID_Brakes_D",
     "type": "float",
-    "defaultValue": 5000.0
+    "defaultValue": 0.00000
   },
   {
-    "name": "tcs_pid_lower_rpm_rear",
+    "name": "yaw_PID_Brakes_I",
     "type": "float",
-    "defaultValue": 0.0
+    "defaultValue": 0.00000
   },
   {
-    "name": "tcs_pid_upper_rpm_rear",
+    "name": "yaw_PID_Brakes_P",
     "type": "float",
-    "defaultValue": 5000.0
+    "defaultValue": 0.25000
   },
   {
-    "name": "maxNormalLoadBrakeScalingFront",
+    "name": "yaw_PID_D",
     "type": "float",
-    "defaultValue": 1.25
+    "defaultValue": 0.00000
   },
   {
-    "name": "tcs_saturation_front",
+    "name": "yaw_PID_I",
     "type": "float",
-    "defaultValue": 20
+    "defaultValue": 0.25000
   },
   {
-    "name": "tcs_saturation_rear",
+    "name": "yaw_PID_P",
     "type": "float",
-    "defaultValue": 20
-  },
-  {
-    "name": "TCSGenLeftRightDiffLowerBound",
-    "type": "float",
-    "defaultValue": 2
-  },
-  {
-    "name": "TCSGenLeftRightDiffUpperBound",
-    "type": "float",
-    "defaultValue": 20
-  },
-  {
-    "name": "TCSWheelSteerLowerBound",
-    "type": "float",
-    "defaultValue": 2
-  },
-  {
-    "name": "TCSWheelSteerUpperBound",
-    "type": "float",
-    "defaultValue": 25
-  },
-  {
-    "name": "max_rpm",
-    "type": "int",
-    "defaultValue": 20000
-  },
-  {
-    "name": "max_regen_torque",
-    "type": "float",
-    "defaultValue": 21.42
-  },
-  {
-    "name": "max_torque",
-    "type": "float",
-    "defaultValue": 21.42
+    "defaultValue": 1.50000
   }
 ]
