@@ -95,4 +95,5 @@ message get_config
 message web_app_command
 {
     bool writing = 1;
+    string metadata = 2;
 }
