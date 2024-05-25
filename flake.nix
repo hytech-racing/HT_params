@@ -16,10 +16,14 @@
     }@inputs:
     flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" "aarch64-linux" ] (system:
     let
+      params_interface_overlay = final: prev: {
+        params_interface = final.callPackage ./default.nix { };
+      };
       ht_eth_protos_overlay = final: prev: {
         # package that has the "final" hytech_eth.proto file
         ht_eth_protos_gen_pkg = final.callPackage ./generate_proto.nix { };
       };
+      
 
       nix_protos_eth_overlays = nix-proto.generateOverlays' {
         hytech_eth_np = { ht_eth_protos_gen_pkg }:
@@ -31,6 +35,7 @@
           };
       };
       my_overlays = [
+        params_interface_overlay
         ht_eth_protos_overlay
       ] ++ nix-proto.lib.overlayToList nix_protos_eth_overlays;
       pkgs = import nixpkgs {
@@ -48,6 +53,7 @@
       shared_shell = pkgs.mkShell rec {
         name = "nix-devshell";
         packages = with pkgs; [
+          params_interface
           ht_eth_protos_gen_pkg
         ];
       };
