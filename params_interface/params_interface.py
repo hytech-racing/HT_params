@@ -6,17 +6,18 @@ import select
 from hytech_eth_np_proto_py import ht_eth_pb2
 import threading
 import argparse
+import sys
+
 
 class RequestHandler(BaseHTTPRequestHandler):
     config_msg = ht_eth_pb2.config()  # Holds the current or last known configuration
     
-    def __init__(self, *args, **kwargs):
-        self.port = kwargs.pop('port', 8001) 
-        self.ip = kwargs.pop('ip', '192.168.1.30')
-        self.host_ip = kwargs.pop('host_ip', '192.168.1.69')
-        self.send_port = kwargs.pop('send_port', 2000)
-        self.recv_port = kwargs.pop('recv_port', 2001)
-        super().__init__(*args, **kwargs)
+    def __init__(self, send_port, recv_port, host_ip, recv_ip):
+        self.ip = recv_ip
+        self.host_ip = host_ip
+        self.send_port = send_port
+        self.recv_port = recv_port
+        super().__init__()
 
     def _send_response(self, html):
         self.send_response(200)
@@ -100,11 +101,11 @@ class RequestHandler(BaseHTTPRequestHandler):
         response_data, got_resp = self.receive_udp_message()
         if response_data and got_resp:
             print("yo got somethin")
-            config_msg = ht_eth_pb2.config()
-            config_msg.ParseFromString(response_data)
-            print(config_msg)
-            RequestHandler.config_msg = config_msg
-            self._send_form(config_msg, '<p><strong>Configuration Received Successfully</strong></p>')
+            config_union_msg = ht_eth_pb2.HT_ETH_Union()
+            config_union_msg.ParseFromString(response_data)
+            print(config_union_msg)
+            RequestHandler.config_msg = config_union_msg.config_
+            self._send_form(RequestHandler.config_msg, '<p><strong>Configuration Received Successfully</strong></p>')
         else:
             print("error, didnt get any response")
             self._send_form(RequestHandler.config_msg, '<p><strong>Error: No response received</strong></p>')
@@ -135,19 +136,16 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._send_form(RequestHandler.config_msg, f'<p><strong>Error: {str(e)}</strong></p>')
         return None
 
-def run(server_class=HTTPServer, handler_class=RequestHandler, port=8000, **kwargs):
+def run(send_port, recv_port, host_ip, recv_ip, server_class=HTTPServer, handler_class=RequestHandler, port=8000):
     server_address = ('', port)
-    httpd = server_class(server_address, lambda *args, **kwargs_: handler_class(*args, **kwargs, **kwargs_))
+    httpd = server_class(server_address, handler_class(send_port, recv_port, host_ip, recv_ip))
     print(f'Server running on port {port}...')
     httpd.serve_forever()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="HTTP Server for handling configurations")
-    parser.add_argument("--port", type=int, default=8000, help="HTTP server port")
-    parser.add_argument("--ip", default="127.0.0.1", help="UDP send IP address")
-    parser.add_argument("--host_ip", default="127.0.0.1", help="UDP recv IP address")
-    parser.add_argument("--send_port", type=int, default=2001, help="UDP send port")
-    parser.add_argument("--recv_port", type=int, default=2002, help="UDP receive port")
-    args = parser.parse_args()
-
-    run(port=args.port, ip=args.ip, send_port=args.send_port, recv_port=args.recv_port)
+    send_port = int(sys.argv[1])
+    recv_port = int(sys.argv[2])
+    web_port = int(sys.argv[3])
+    host_ip = sys.argv[4]
+    recv_ip = sys.argv[5]
+    run(port=web_port, send_port=send_port, recv_port=recv_port, host_ip=host_ip, recv_ip=recv_ip)
