@@ -51,7 +51,6 @@
           ht_eth_protos_gen_pkg
         ];
       };
-
       
     in
     {
@@ -61,8 +60,8 @@
       };
 
       packages = rec {
+        default = pkgs.params_interface;
         hytech_eth_np_proto_py = pkgs.hytech_eth_np_proto_py;
-        default = pkgs.ht_eth_protos_gen_pkg;
         nanopbRunner = nanopb_runner;
       };
 
