@@ -1,12 +1,98 @@
 syntax = "proto3";
 
-message CASE_msg
-{
-    float vehm_fl_slip = 1;
-    
+message CASE_msg {
+    float FinalTorqueFL = 1;
+    float FinalTorqueFR = 2;
+    float FinalTorqueRL = 3;
+    float FinalTorqueRR = 4;
+    float VEHM_Beta_Deg = 5;
+    float VEHM_Alpha_FL_Deg = 6;
+    float VEHM_Alpha_FR_Deg = 7;
+    float VEHM_Alpha_RL_Deg = 8;
+    float VEHM_Alpha_RR_Deg = 9;
+    float VEHM_Long_Corner_Vel_FL_m_s = 10;
+    float VEHM_Long_Corner_Vel_FR_m_s = 11;
+    float VEHM_Long_Corner_Vel_RL_m_s = 12;
+    float VEHM_Long_Corner_Vel_RR_m_s = 13;
+    float VEHM_Kinematic_Desired_Yaw_Rate_Rad_s = 14;
+    float VEHM_SL_FL = 15;
+    float VEHM_SL_FR = 16;
+    float VEHM_SL_RL = 17;
+    float VEHM_SL_RR = 18;
+    float VEHM_Wheel_Steer_Avg_Deg = 19;
+    float VEHM_Wheel_Linear_Vel_FL_m_s = 20;
+    float VEHM_Wheel_Linear_Vel_FR_m_s = 21;
+    float VEHM_Wheel_Linear_Vel_RL_m_s = 22;
+    float VEHM_Wheel_Linear_Vel_RR_m_s = 23;
+    float CONTROLLER_Initial_Torque_Avg_Driver_Side_Request = 24;
+    float CONTROLLER_Mode_Constrained_Torque_Request = 25;
+    float CONTROLLER_Normal_Percent_FL = 26;
+    float CONTROLLER_Normal_Percent_FR = 27;
+    float CONTROLLER_Normal_Percent_RL = 28;
+    float CONTROLLER_Normal_Percent_RR = 29;
+    float CONTROLLER_Normal_Torque_FL = 30;
+    float CONTROLLER_Normal_Torque_FR = 31;
+    float CONTROLLER_Normal_Torque_RL = 32;
+    float CONTROLLER_Normal_Torque_RR = 33;
+    float CONTROLLER_Yaw_PID_Output = 34;
+    float CONTROLLER_Yaw_Rate_Error_Rad_s = 35;
+    float CONTROLLER_Kinematic_Desired_Yaw_Rate_Rad_s = 36;
+    float CONTROLLER_Yaw_PID_Torque_FL = 37;
+    float CONTROLLER_Yaw_PID_Torque_FR = 38;
+    float CONTROLLER_Yaw_PID_Torque_RL = 39;
+    float CONTROLLER_Yaw_PID_Torque_RR = 40;
+    float CONTROLLER_Power_Limit_Error_kW = 41;
+    float CONTROLLER_Power_Limit_Status = 42;
+    float CONTROLLER_Power_Limit_Torque_Adjustment = 43;
+    float CONTROLLER_Power_Limit_Corner_Power_FL_kW = 44;
+    float CONTROLLER_Power_Limit_Corner_Power_FR_kW = 45;
+    float CONTROLLER_Power_Limit_Corner_Power_RL_kW = 46;
+    float CONTROLLER_Power_Limit_Corner_Power_RR_kW = 47;
+    float CONTROLLER_Power_Limit_Torque_FL = 48;
+    float CONTROLLER_Power_Limit_Torque_FR = 49;
+    float CONTROLLER_Power_Limit_Torque_RL = 50;
+    float CONTROLLER_Power_Limit_Torque_RR = 51;
+    float CONTROLLER_TCS_Status_FL = 52;
+    float CONTROLLER_TCS_Status_FR = 53;
+    float CONTROLLER_TCS_Status_RL = 54;
+    float CONTROLLER_TCS_Status_RR = 55;
+    float CONTROLLER_TCS_PID_Input_FL = 56;
+    float CONTROLLER_TCS_PID_Input_FR = 57;
+    float CONTROLLER_TCS_PID_Input_RL = 58;
+    float CONTROLLER_TCS_PID_Input_RR = 59;
+    float CONTROLLER_TCS_Adjusted_PID_Output_FL = 60;
+    float CONTROLLER_TCS_Adjusted_PID_Output_FR = 61;
+    float CONTROLLER_TCS_Adjusted_PID_Output_RL = 62;
+    float CONTROLLER_TCS_Adjusted_PID_Output_RR = 63;
+    float CONTROLLER_TCS_Torque_FL = 64;
+    float CONTROLLER_TCS_Torque_FR = 65;
+    float CONTROLLER_TCS_Torque_RL = 66;
+    float CONTROLLER_TCS_Torque_RR = 67;
+    float CONTROLLER_Regen_5KPH_Torque_FL = 68;
+    float CONTROLLER_Regen_5KPH_Torque_FR = 69;
+    float CONTROLLER_Regen_5KPH_Torque_RL = 70;
+    float CONTROLLER_Regen_5KPH_Torque_RR = 71;
+    float CONTROLLER_Regen_5KPH_Status_FL = 72;
+    float CONTROLLER_Regen_5KPH_Status_FR = 73;
+    float CONTROLLER_Regen_5KPH_Status_RL = 74;
+    float CONTROLLER_Regen_5KPH_Status_RR = 75;
+    float CONTROLLER_Bias_Constrained_Torque_Avg_Front = 76;
+    float CONTROLLER_Bias_Constrained_Torque_Avg_Rear = 77;
+    float CONTROLLER_TCS_PID_P_FL = 78;
+    float CONTROLLER_TCS_PID_P_FR = 79;
+    float CONTROLLER_TCS_PID_P_RL = 80;
+    float CONTROLLER_TCS_PID_P_RR = 81;
+    float CONTROLLER_TCS_SL_Target_Front = 82;
+    float CONTROLLER_TCS_SL_Target_Rear = 83;
 }
+
 
 message get_config
 {
     bool update_frontend = 1;
+}
+
+message web_app_command
+{
+    bool writing = 1;
 }

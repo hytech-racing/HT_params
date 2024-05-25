@@ -8,16 +8,15 @@ import threading
 import argparse
 import sys
 
-
 class RequestHandler(BaseHTTPRequestHandler):
     config_msg = ht_eth_pb2.config()  # Holds the current or last known configuration
     
-    def __init__(self, send_port, recv_port, host_ip, recv_ip):
-        self.ip = recv_ip
-        self.host_ip = host_ip
-        self.send_port = send_port
-        self.recv_port = recv_port
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        self.ip = kwargs.pop('recv_ip')
+        self.host_ip = kwargs.pop('host_ip')
+        self.send_port = kwargs.pop('send_port')
+        self.recv_port = kwargs.pop('recv_port')
+        super().__init__(*args, **kwargs)
 
     def _send_response(self, html):
         self.send_response(200)
@@ -101,6 +100,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         response_data, got_resp = self.receive_udp_message()
         if response_data and got_resp:
             print("yo got somethin")
+            
             config_union_msg = ht_eth_pb2.HT_ETH_Union()
             config_union_msg.ParseFromString(response_data)
             print(config_union_msg)
@@ -112,6 +112,8 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def send_udp_message(self, data):
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            print("sending to ",self.ip)
+            print("send port ", self.send_port)
             sock.sendto(data, (self.ip, self.send_port))
             print("Message sent!")
 
@@ -126,7 +128,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 print("attempting to recv")
                 if ready[0]:
                     print("ready")
-                    data, addr = sock.recvfrom(1024)
+                    data, addr = sock.recvfrom(4000)
                     return data, ready[0]
                 else:
                     self._send_form(RequestHandler.config_msg, f'<p><strong>Error: {str("rip no msg recvd")}</strong></p>')
@@ -137,8 +139,10 @@ class RequestHandler(BaseHTTPRequestHandler):
         return None
 
 def run(send_port, recv_port, host_ip, recv_ip, server_class=HTTPServer, handler_class=RequestHandler, port=8000):
+    def handler(*args, **kwargs):
+        handler_class(send_port=send_port, recv_port=recv_port, host_ip=host_ip, recv_ip=recv_ip, *args, **kwargs)
     server_address = ('', port)
-    httpd = server_class(server_address, handler_class(send_port, recv_port, host_ip, recv_ip))
+    httpd = server_class(server_address, handler)
     print(f'Server running on port {port}...')
     httpd.serve_forever()
 
