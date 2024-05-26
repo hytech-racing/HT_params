@@ -16,6 +16,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.CASE_SSH_PRIVATE_KEY }}
       - uses: cachix/install-nix-action@v23
+        install_url: https://releases.nixos.org/nix/nix-2.20.3/install
       - name: Get branch names
         id: branch-name
         uses: tj-actions/branch-names@v7
