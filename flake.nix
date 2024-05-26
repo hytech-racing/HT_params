@@ -5,6 +5,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     flake-utils.url = "github:numtide/flake-utils";
     nix-proto = { url = "github:notalltim/nix-proto"; };
+    CASE_lib = {
+      url = "git+ssh://git@github.com/hytech-racing/CASE_lib?ref=v60&rev=735b6ae28ad3610cf35e43769ef09c449c896992";
+      # rev = "v60";
+      flake = false;
+    };
   };
 
   outputs =
@@ -12,6 +17,7 @@
     , nixpkgs
     , flake-utils
     , nix-proto
+    , CASE_lib
     , ...
     }@inputs:
     flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" "aarch64-linux" ] (system:
@@ -21,7 +27,7 @@
       };
       ht_eth_protos_overlay = final: prev: {
         # package that has the "final" hytech_eth.proto file
-        ht_eth_protos_gen_pkg = final.callPackage ./generate_proto.nix { };
+        ht_eth_protos_gen_pkg = final.callPackage ./generate_proto.nix { inherit CASE_lib; };
       };
       
 

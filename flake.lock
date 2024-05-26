@@ -1,5 +1,23 @@
 {
   "nodes": {
+    "CASE_lib": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1716735369,
+        "narHash": "sha256-T3Jtp0XKL6Q+VZTf1k3uvbDb3Og9lWnsHvc62Xqq7gE=",
+        "ref": "v60",
+        "rev": "735b6ae28ad3610cf35e43769ef09c449c896992",
+        "revCount": 28,
+        "type": "git",
+        "url": "ssh://git@github.com/hytech-racing/CASE_lib"
+      },
+      "original": {
+        "ref": "v60",
+        "rev": "735b6ae28ad3610cf35e43769ef09c449c896992",
+        "type": "git",
+        "url": "ssh://git@github.com/hytech-racing/CASE_lib"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -102,6 +120,7 @@
     },
     "root": {
       "inputs": {
+        "CASE_lib": "CASE_lib",
         "flake-utils": "flake-utils",
         "nix-proto": "nix-proto",
         "nixpkgs": "nixpkgs_2"

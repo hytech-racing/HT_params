@@ -1,4 +1,5 @@
 import json
+import sys
 
 def format_default_value(value, param_type):
     if param_type == 'bool':
@@ -92,7 +93,7 @@ def generate_proto(parameters, msgs_file='msgs.proto', output_file='ht_eth.proto
         file.write(combined_content + "\n" + union_message)
 
 if __name__ == "__main__":
-    with open("parameters.json", "r") as file:
+    with open(sys.argv[1], "r") as file:
         params = json.load(file)
     verify_parameters(params)
     generate_proto(params)

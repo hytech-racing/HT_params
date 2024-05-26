@@ -1,4 +1,4 @@
-{pkgs, python311, protobuf }:
+{pkgs, python311, protobuf, CASE_lib }:
 
 pkgs.stdenv.mkDerivation rec {
   name = "ht_eth_protos";
@@ -10,7 +10,7 @@ pkgs.stdenv.mkDerivation rec {
   # Define the build phase to execute the scripts
   buildPhase = ''
     # Run the Python script
-    ${python311}/bin/python gen_proto.py
+    ${python311}/bin/python gen_proto.py ${CASE_lib}/CASEParameters.json
     protoc --include_imports --descriptor_set_out=ht_eth.bin ht_eth.proto
   '';
 
