@@ -12,6 +12,9 @@ jobs:
       matrix:
         version: [23.11]
     steps:
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.CASE_SSH_PRIVATE_KEY }}
       - uses: cachix/install-nix-action@v23
       - name: Get branch names
         id: branch-name
